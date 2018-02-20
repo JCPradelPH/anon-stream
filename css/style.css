@@ -1,0 +1,31 @@
+html, body, body div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address,
+cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong,
+sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label,
+legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside,
+figure, footer, header, hgroup, menu, nav, section, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+}
+body,html,#app,#container,header,header section{height:100%;}
+ul {
+  margin-top: 0;
+}
+ul li{ list-style: none;}
+.active{
+  font-weight:bolder;
+}
+a{
+  text-decoration:none !important;
+  display:block;
+}
+.navbar-dark .navbar-nav .nav-link{
+  padding:15px;
+  font-size:15px;
+}
+header h1{
+  margin:20px;
+}
+#mcontainer{ padding:20px;background:rgb(245,245,245); }
