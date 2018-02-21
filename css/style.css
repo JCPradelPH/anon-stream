@@ -29,3 +29,13 @@ header h1{
   margin:20px;
 }
 #mcontainer{ padding:20px;background:rgb(245,245,245); }
+.logo-holder{
+  background: rgb(145, 178, 46);
+  padding:10px;
+  text-align:left;
+}
+.logo-holder svg{
+  margin:auto;
+}
+#main-content{
+}
