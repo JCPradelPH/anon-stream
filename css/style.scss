@@ -1,18 +1,55 @@
-@import "partials/defaults";
 @import "partials/variables";
 @import "partials/mixins";
 @import "partials/properties";
-
-body,html,#app,#container,header,header section{height:100%;}
-ul {
-  margin-top: 0;
-  li{ list-style: none;}
+@import "partials/defaults";
+#app{
+  height:100%;
+  #main-container{
+    @extend %vertical;
+    @extend %justify-content-center;
+  }
 }
-
-.active{
-  font-weight:bolder;
+#logo-holder{
+  @extend %vertical;
+  @extend %align-content-center;
+  @extend %justify-content-center;
+  margin-top:12.5%;
+  margin-bottom:25px;
+  img{
+    @extend %align-self-center;
+    width:250px;
+    height:auto;
+  }
+  p{
+    @extend %align-self-center;
+    font-size:14px;
+    color:#fff;
+    line-height:0.5em;
+  }
 }
-a{
-  text-decoration:none !important;
-  display:block;
+#btn-holder{
+  @extend %vertical;
+  @extend %align-content-center;
+  #bt-create-room{
+    @extend %horizontal;
+    @extend %justify-content-center;
+    @extend %align-self-center;
+    @extend %btn-template;
+    width:$hm-btn-w;
+    margin:10px;
+  }
+  #room-id-holder{
+    margin-top:10px;
+    @extend %align-self-center;
+    width:$hm-btn-w;
+    button{
+      @extend %btn-template;
+      background: $sec-color;
+    }
+    #room-id{ @extend %input-ov-outline; }
+  }
+  p{
+    @extend %align-self-center;
+    color:#fff;
+  }
 }

@@ -1,3 +1,59 @@
+#btn-holder #bt-create-room {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  -o-flex-direction: row;
+  -webkit-flex-direction: row; }
+
+#app #main-container, #logo-holder, #btn-holder {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  -o-flex-direction: column;
+  -webkit-flex-direction: column; }
+
+#app #main-container, #logo-holder, #btn-holder #bt-create-room {
+  justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  -o-justify-content: center;
+  -webkit-justify-content: center; }
+
+#logo-holder img, #logo-holder p, #btn-holder #bt-create-room, #btn-holder #room-id-holder, #btn-holder p {
+  align-self: center;
+  -moz-align-self: center;
+  -ms-align-self: center;
+  -o-align-self: center;
+  -webkit-align-self: center; }
+
+#logo-holder, #btn-holder {
+  align-content: center;
+  -moz-align-content: center;
+  -ms-align-content: center;
+  -o-align-content: center;
+  -webkit-align-content: center; }
+
+#btn-holder #room-id-holder #room-id {
+  outline-color: rgba(110, 60, 157, 0.5);
+  border-color: #61358b; }
+
+#btn-holder #bt-create-room, #btn-holder #room-id-holder button {
+  outline-color: rgba(110, 60, 157, 0.5);
+  border-color: #61358b;
+  background: #6e3c9d; }
+  #btn-holder #bt-create-room:active, #btn-holder #room-id-holder button:active {
+    background: #a175ca; }
+
 html, body, body div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address,
 cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong,
@@ -9,17 +65,45 @@ figure, footer, header, hgroup, menu, nav, section, time, mark, audio, video {
   border: 0;
   outline: 0; }
 
-body, html, #app, #container, header, header section {
-  height: 100%; }
+body, html {
+  height: 100%;
+  background: #7ac312; }
 
 ul {
   margin-top: 0; }
   ul li {
     list-style: none; }
 
-.active {
-  font-weight: bolder; }
-
 a {
   text-decoration: none !important;
   display: block; }
+
+i.fa {
+  padding: 5px; }
+
+#app {
+  height: 100%; }
+
+#logo-holder {
+  margin-top: 12.5%;
+  margin-bottom: 25px; }
+  #logo-holder img {
+    width: 250px;
+    height: auto; }
+  #logo-holder p {
+    font-size: 14px;
+    color: #fff;
+    line-height: 0.5em; }
+
+#btn-holder #bt-create-room {
+  width: 250px;
+  margin: 10px; }
+
+#btn-holder #room-id-holder {
+  margin-top: 10px;
+  width: 250px; }
+  #btn-holder #room-id-holder button {
+    background: #6e3c9d; }
+
+#btn-holder p {
+  color: #fff; }
