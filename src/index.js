@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom'
 import CSSModules from 'react-css-modules'
 
 import '../css/bootstrap.min.css'
-import '../css/flexbox.css'
-import '../css/style.css'
+import '../dist/css/style.css'
 
 import MainLayout from './MainLayout'
 import {configureStore} from './redux/configureStore'
