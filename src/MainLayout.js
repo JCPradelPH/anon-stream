@@ -6,6 +6,9 @@ let contentStyle = {
   backgroundImage: 'url(' + Background + ')',
   backgroundSize: 'cover'
 }
+@connect( store => ({
+  loading: store.sample.loading
+}) )
 export default class MainLayout extends React.Component{
   componentDidMount(){
 

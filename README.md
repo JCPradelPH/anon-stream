@@ -1,2 +1,2 @@
-# scrumptious
-WebRTC integrated software that lets you stream video anonymously
+# sess.io
+WebRTC integrated software
