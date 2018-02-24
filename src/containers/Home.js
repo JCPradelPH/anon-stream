@@ -1,5 +1,6 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
+import {MainLogo} from '../components'
 export default class Home extends React.Component{
 
   render(){
@@ -14,8 +15,8 @@ export default class Home extends React.Component{
 const HeaderLogo = () => {
   return(
     <section id="logo-holder">
-      <img id="main-logo" src="../css/images/main-logo-lt.png" />
-      <p>Create video|voice calls on the fly</p>
+      <MainLogo />
+      <p>Communication made easy</p>
     </section>
   )
 }

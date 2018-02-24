@@ -1,8 +1,6 @@
 import React from 'react'
-export const HeaderLogo = (props) => {
+export const MainLogo = (props) => {
   return(
-    <section class="logo-holder">
-      <img id="main-logo" src="../css/images/main-logo-lt.png" />
-    </section>
+    <img id="main-logo" src="../css/images/main-logo-lt.png" />
   )
 }
