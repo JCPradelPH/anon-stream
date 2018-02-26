@@ -61,7 +61,7 @@ module.exports = {
     ]
   },
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: true
   },
   devtool: debug ? "inline-sourcemap" : null,
   plugins: debug ? [

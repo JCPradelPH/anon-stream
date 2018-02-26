@@ -1,7 +1,11 @@
 import React from 'react'
-import {NavLink} from 'react-router-dom'
+import {NavLink, Link} from 'react-router-dom'
 import {MainLogo} from '../components'
+import {generateUniqid} from '../js'
 export default class Home extends React.Component{
+  componentDidMount(){
+
+  }
 
   render(){
     return(
@@ -16,7 +20,7 @@ const HeaderLogo = () => {
   return(
     <section id="logo-holder">
       <MainLogo />
-      <p>Communication made easy</p>
+      <p>Lorem ipsum damet</p>
     </section>
   )
 }
@@ -31,15 +35,22 @@ const ButtonSection = () => {
 }
 
 const CreateRoomButton = () => {
+  const roomId = generateUniqid()
   return(
-    <NavLink id="bt-create-room" class="btn btn-primary" activeClassName="active" exact to={'/'}>
+    <Link id="bt-create-room" class="btn btn-primary"
+      to={{
+        pathname: `/room`,
+        search: `${roomId}`,
+        state: { createMode: true, roomId: roomId }
+      }}>
       <i class="fa fa-plus-circle"></i>
       <p>Create A Room</p>
-    </NavLink>
+    </Link>
   )
 }
 
 const JoinRoomInput = () => {
+
   return(
     <div id="room-id-holder" class="input-group mb-3">
       <input type="text" id="room-id" name="room-id" class="room-id form-control" placeholder="Enter room id"
