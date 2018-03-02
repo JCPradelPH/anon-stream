@@ -20,7 +20,7 @@ const HeaderLogo = () => {
   return(
     <section id="logo-holder">
       <MainLogo />
-      <p>Lorem ipsum damet</p>
+      <p>Lorem ipsum test</p>
     </section>
   )
 }
