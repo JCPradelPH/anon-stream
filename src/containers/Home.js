@@ -17,7 +17,7 @@ const HeaderLogo = () => {
   return(
     <section id="logo-holder">
       <MainLogo />
-      <p>Lorem ipsum damet Lorem</p>
+      <p>Lorem ipsum damet </p>
     </section>
   )
 }
