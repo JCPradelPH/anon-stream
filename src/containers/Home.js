@@ -2,11 +2,8 @@ import React from 'react'
 import {NavLink, Link} from 'react-router-dom'
 import {MainLogo} from '../components'
 import {generateUniqid} from '../js'
+
 export default class Home extends React.Component{
-  componentDidMount(){
-
-  }
-
   render(){
     return(
       <div id="main-container">
@@ -20,7 +17,7 @@ const HeaderLogo = () => {
   return(
     <section id="logo-holder">
       <MainLogo />
-      <p>Lorem ipsum test</p>
+      <p>Lorem ipsum damet Lorem</p>
     </section>
   )
 }
