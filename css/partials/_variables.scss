@@ -1,8 +1,15 @@
+// colors
 $main-color: complement(#5b12c3);
 $sec-color: #6e3c9d;
+$dkgray: #3e3e3e;
 $blue-shade: lighten(#0062cc,20%);
 $lt-gray: rgb(245,245,245);
 $dk-gray: darken($lt-gray,20%);
+$google-red: rgb(196,8,7);
+$facebook-blue: rgb(0,91,171);
+
+// dimens
 $hm-btn-w: 250px;
 $input-def-pad: 7px;
 $input-def-border-radius: 5px;
+$video-dimens: 250px;

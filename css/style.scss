@@ -3,12 +3,10 @@
 @import "partials/mixins";
 @import "partials/properties";
 @import "partials/defaults";
-#app{
-  height:100%;
-  #main-container{
-    @extend %vertical;
-    @extend %justify-content-center;
-  }
+#app, #room-container, #rm-content{ height:100%; }
+#main-container{
+  @extend %vertical;
+  @extend %justify-content-center;
 }
 #logo-holder{
   @extend %vertical;
@@ -31,26 +29,55 @@
 #btn-holder{
   @extend %vertical;
   @extend %align-content-center;
-  #bt-create-room{
+  #bt-google-signin, #bt-facebook-signin{
     @extend %horizontal;
     @extend %justify-content-center;
     @extend %align-self-center;
     @extend %btn-template;
     width:$hm-btn-w;
     margin:10px;
+    background:#fff;
   }
+  #bt-google-signin i, #bt-google-signin p{ color:$google-red; }
+  #bt-facebook-signin i, #bt-facebook-signin p{ color: lighten($lt-gray,100); }
   #room-id-holder{
     margin-top:10px;
     @extend %align-self-center;
     width:$hm-btn-w;
-    button{
-      @extend %btn-template;
-      background: $sec-color;
-    }
-    #room-id{ @extend %input-ov-outline; }
   }
+  #bt-facebook-signin{
+    @extend %btn-template;
+    background:$facebook-blue;
+  }
+  #room-id-holder #room-id{ @extend %input-ov-outline; }
   p{
     @extend %align-self-center;
     color:#fff;
+    font-weight:600;
+  }
+}
+#rm-content{
+  @extend %horizontal;
+  #left-panel{
+    @extend %vertical;
+    padding: 10px;
+  }
+  #left-panel article{
+    width: $video-dimens;
+    background: $dkgray;
+    color: #fff;
+  }
+  #left-panel article video{ width: $video-dimens; }
+  #left-panel article .screen-blocked{
+    padding:25px;
+    font-size:12px;
+  }
+  #local-vid{
+    background:none;
+    height:175px;
+  }
+  #right-panel{
+    width: 100%;
+    background: $lt-gray;
   }
 }

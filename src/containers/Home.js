@@ -1,60 +1,89 @@
 import React from 'react'
 import {NavLink, Link} from 'react-router-dom'
-import {MainLogo} from '../components'
+import {MainLogoLt} from '../components'
 import {generateUniqid} from '../js'
+import Rx from 'rxjs/Rx'
 
+import {connect} from 'react-redux'
+
+@connect( (store) => {
+  return {
+    signedIn: store.firebaseSignin.signedIn,
+    initialized: store.firebaseSignin.initialized,
+    user: store.firebaseSignin.user,
+    token: store.firebaseSignin.token,
+    error: store.firebaseSignin.error,
+  }
+} )
 export default class Home extends React.Component{
+  componentWillMount(){
+    this.props.action.firebaseSignin.init()
+  }
+  componentDidMount(){
+
+  }
+  componentWillUnmount(){
+
+  }
   render(){
+    const {initialized} = this.props
+    console.log(`initialized: ${initialized}`)
     return(
       <div id="main-container">
         <HeaderLogo />
-        <ButtonSection />
+        <ButtonSection {...this.props} />
       </div>
     )
   }
 }
+
 const HeaderLogo = () => {
   return(
     <section id="logo-holder">
-      <MainLogo />
+      <MainLogoLt />
     <p>Lorem ipsum damet ipsum </p>
     </section>
   )
 }
-const ButtonSection = () => {
+const ButtonSection = (props) => {
   return(
     <section id="btn-holder">
-      <CreateRoomButton />
-      <p>or</p>
-      <JoinRoomInput />
+      <FacebookSignin {...props} />
+      <GoogleSignin {...props} />
     </section>
   )
 }
-
-const CreateRoomButton = () => {
-  const roomId = generateUniqid()
+const signInListener$ = (props) => {
+  return Rx.Observable.create( obs => {
+    props.action.firebaseSignin
+      .execGoogleSignInPopup()
+      .then( data => obs.next(data)  )
+      .catch( err => obs.error(err) )
+  } )
+}
+const GoogleSignin = (props) => {
+  const execSignin = () => {
+    console.log(`props: ${props}`)
+    if(props.initialized){
+      signInListener$.subscribe({
+        next: data => console.log(data),
+        error: err => console.log(err),
+        complete: () => console.log('complete')
+      })
+    }
+  }
   return(
-    <Link id="bt-create-room" class="btn btn-primary"
-      to={{
-        pathname: `/room`,
-        search: `${roomId}`,
-        state: { createMode: true, roomId: roomId }
-      }}>
-      <i class="fa fa-plus-circle"></i>
-      <p>Create A Room</p>
-    </Link>
+    <button id="bt-google-signin" onClick={execSignin} class="btn btn-primary">
+      <p>Sign in with</p>
+      <i class="fab fa-google-plus-square"></i>
+    </button>
   )
 }
-
-const JoinRoomInput = () => {
-
+const FacebookSignin = () => {
   return(
-    <div id="room-id-holder" class="input-group mb-3">
-      <input type="text" id="room-id" name="room-id" class="room-id form-control" placeholder="Enter room id"
-        aria-label="Enter room id" aria-describedby="basic-addon2" />
-      <div class="input-group-append">
-        <button class="btn btn-primary" type="button">Join<i class="fa fa-sign-in-alt"></i></button>
-      </div>
-    </div>
+    <button id="bt-facebook-signin" class="btn btn-primary">
+      <p>Log in with</p>
+      <i class="fab fa-facebook-square"></i>
+    </button>
   )
 }

@@ -13,7 +13,7 @@
   src: url("/css/fonts/quicksand-light/Quicksand_Light.otf");
   src: url("/css/fonts/quicksand-light/Quicksand_Light.eot?#iefix") format("embedded-opentype"), url("/css/fonts/quicksand-light/Quicksand_Light.woff2") format("woff2"), url("/css/fonts/quicksand-light/Quicksand_Light.woff") format("woff"), url("/css/fonts/quicksand-light/Quicksand_Light.ttf") format("truetype"), url("/css/fonts/quicksand-light/Quicksand_Light.svg") format("svg"); }
 
-#btn-holder #bt-create-room {
+#btn-holder #bt-google-signin, #btn-holder #bt-facebook-signin, #rm-content {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -25,7 +25,7 @@
   -o-flex-direction: row;
   -webkit-flex-direction: row; }
 
-#app #main-container, #logo-holder, #btn-holder {
+#main-container, #logo-holder, #btn-holder, #rm-content #left-panel {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -37,14 +37,14 @@
   -o-flex-direction: column;
   -webkit-flex-direction: column; }
 
-#app #main-container, #logo-holder, #btn-holder #bt-create-room {
+#main-container, #logo-holder, #btn-holder #bt-google-signin, #btn-holder #bt-facebook-signin {
   justify-content: center;
   -moz-justify-content: center;
   -ms-justify-content: center;
   -o-justify-content: center;
   -webkit-justify-content: center; }
 
-#logo-holder img, #logo-holder p, #btn-holder #bt-create-room, #btn-holder #room-id-holder, #btn-holder p {
+#logo-holder img, #logo-holder p, #btn-holder #bt-google-signin, #btn-holder #bt-facebook-signin, #btn-holder #room-id-holder, #btn-holder p {
   align-self: center;
   -moz-align-self: center;
   -ms-align-self: center;
@@ -62,11 +62,11 @@
   outline-color: rgba(110, 60, 157, 0.5);
   border-color: #61358b; }
 
-#btn-holder #bt-create-room, #btn-holder #room-id-holder button {
+#btn-holder #bt-google-signin, #btn-holder #bt-facebook-signin {
   outline-color: rgba(110, 60, 157, 0.5);
   border-color: #61358b;
   background: #6e3c9d; }
-  #btn-holder #bt-create-room:active, #btn-holder #room-id-holder button:active {
+  #btn-holder #bt-google-signin:active, #btn-holder #bt-facebook-signin:active {
     background: #a175ca; }
 
 html, body, body div, span, object, iframe,
@@ -94,10 +94,19 @@ a {
   text-decoration: none !important;
   display: block; }
 
-i.fa {
-  padding: 6px; }
+i.fa, i.fab {
+  padding: 6px;
+  font-size: 2em; }
 
-#app {
+.button-holder {
+  margin: 20px 0px; }
+  .button-holder .bt-default {
+    width: 100%; }
+
+.hidden {
+  display: none; }
+
+#app, #room-container, #rm-content {
   height: 100%; }
 
 #logo-holder {
@@ -111,15 +120,47 @@ i.fa {
     color: #fff;
     line-height: 0.5em; }
 
-#btn-holder #bt-create-room {
+#btn-holder #bt-google-signin, #btn-holder #bt-facebook-signin {
   width: 250px;
-  margin: 10px; }
+  margin: 10px;
+  background: #fff; }
+
+#btn-holder #bt-google-signin i, #btn-holder #bt-google-signin p {
+  color: #c40807; }
+
+#btn-holder #bt-facebook-signin i, #btn-holder #bt-facebook-signin p {
+  color: white; }
 
 #btn-holder #room-id-holder {
   margin-top: 10px;
   width: 250px; }
-  #btn-holder #room-id-holder button {
-    background: #6e3c9d; }
+
+#btn-holder #bt-facebook-signin {
+  background: #005bab; }
 
 #btn-holder p {
+  color: #fff;
+  font-weight: 600; }
+
+#rm-content #left-panel {
+  padding: 10px; }
+
+#rm-content #left-panel article {
+  width: 250px;
+  background: #3e3e3e;
   color: #fff; }
+
+#rm-content #left-panel article video {
+  width: 250px; }
+
+#rm-content #left-panel article .screen-blocked {
+  padding: 25px;
+  font-size: 12px; }
+
+#rm-content #local-vid {
+  background: none;
+  height: 175px; }
+
+#rm-content #right-panel {
+  width: 100%;
+  background: whitesmoke; }
