@@ -11,6 +11,100 @@ export const MainLogoDk = (props) => {
     <img id="main-logo" src="../css/images/main-logo-dk.png" />
   )
 }
+export const LoaderAnimSm = (props) => {
+  return(
+    <img class="loader-anim-sm" src="../css/images/loader.gif" />
+  )
+}
+export const LoaderAnimSLg = (props) => {
+  return(
+    <img class="loader-anim-lg" src="../css/images/loader.gif" />
+  )
+}
+
+export const FacebookButton = (props) => {
+  return(
+    <button type="button" {...props} class="btn btn-primary bt-def bt-icon-last bt-facebook-theme">
+      <p>{props.buttonlabel}</p>
+      <i class={props.iconclass}></i>
+    </button>
+  )
+}
+export const GoogleButton = (props) => {
+  return(
+    <button type="button" {...props} class="btn btn-primary bt-def bt-icon-last bt-google-theme">
+      <p>{props.buttonlabel}</p>
+      <i class={props.iconclass}></i>
+    </button>
+  )
+}
+
+export const ButtonIconLastWhite = (props) => {
+  return(
+    <button type="button" {...props} class="btn btn-primary bt-def bt-icon-last bt-white-theme">
+      <p>{props.buttonlabel}</p>
+      <i class={props.iconclass}></i>
+    </button>
+  )
+}
+export const ButtonIconLastWhiteSm = (props) => {
+  return(
+    <button type="button" {...props} class="btn btn-primary bt-icon-last-sm bt-def bt-white-theme">
+      <p>{props.buttonlabel}</p>
+      <i class={props.iconclass}></i>
+    </button>
+  )
+}
+
+export const ButtonIconLastPrimary = (props) => {
+  return(
+    <button type="button" {...props} class="btn btn-primary bt-def bt-icon-last bt-primary-theme">
+      <p>{props.buttonlabel}</p>
+      <i class={props.iconclass}></i>
+    </button>
+  )
+}
+export const ButtonIconLastPrimarySm = (props) => {
+  return(
+    <button type="button" {...props} class="btn btn-primary bt-icon-last-sm bt-def bt-primary-theme">
+      <p>{props.buttonlabel}</p>
+      <i class={props.iconclass}></i>
+    </button>
+  )
+}
+export const ButtonIconLastRed = (props) => {
+  return(
+    <button type="button" {...props} class="btn btn-primary bt-def bt-icon-last bt-red-theme">
+      <p>{props.buttonlabel}</p>
+      <i class={props.iconclass}></i>
+    </button>
+  )
+}
+export const ButtonIconLastRedSm = (props) => {
+  return(
+    <button type="button" {...props} class="btn btn-primary bt-icon-last-sm bt-def bt-red-theme">
+      <p>{props.buttonlabel}</p>
+      <i class={props.iconclass}></i>
+    </button>
+  )
+}
+export const ButtonIconLastBlue = (props) => {
+  return(
+    <button type="button" {...props} class="btn btn-primary bt-def bt-icon-last bt-blue-theme">
+      <p>{props.buttonlabel}</p>
+      <i class={props.iconclass}></i>
+    </button>
+  )
+}
+export const ButtonIconLastBlueSm = (props) => {
+  return(
+    <button type="button" {...props} class="btn btn-primary bt-icon-last-sm bt-def bt-blue-theme">
+      <p>{props.buttonlabel}</p>
+      <i class={props.iconclass}></i>
+    </button>
+  )
+}
+
 
 export const JoinRoomInput = () => (
     <div id="room-id-holder" class="input-group mb-3">

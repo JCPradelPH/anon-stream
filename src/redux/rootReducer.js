@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux'
 
-const containers = ['webrtc','firebaseSignin'] //list of modules that contains reducers and actions
+const containers = ['webrtc','firebaseIntegration','roomsettings','requiredFieldHandler'] //list of modules that contains reducers and actions
 
 const reducers = [] //container for reducers
 export const actions = [] //container for actions

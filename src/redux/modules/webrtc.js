@@ -1,5 +1,4 @@
 import {createConstants, createReducer} from 'redux-module-builder'
-import {createApiAction, createApiHandler} from 'redux-module-builder/api'
 import SimpleWebRtc from 'simplewebrtc'
 
 const types = createConstants('WEBRTC')(
@@ -7,26 +6,16 @@ const types = createConstants('WEBRTC')(
   'MEDIA_PERM_ALLOWED':{api:true}
 )
 let webrtc
+let localStream
 export const reducers = createReducer({
   [types.MEDIA_PERM_ALLOWED]: (state,action) => ({
     ...state,
     loading:false,
     error:action.error,
-    mediaAllowed: action.isAllowed,
+    mediaAllowed: action.mediaAllowed,
     stream: action.stream,
     statusMessage:action.statusMessage
   }),
-  // ...createApiHandler( types.MEDIA_PERM_ALLOWED, apiStates => ({
-  //   [apiStates.LOADING]: (state,action) => ( {...state,loading:true,statusMessage:'Requesting media permission...'} ),
-  //   [apiStates.ERROR]: (state,action) => ( {...state,loading:false,error:action.payload.error,statusMessage:'There was an error requesting permission...'} )
-  // }) )( (state,action) => ( {
-  //   ...state,
-  //   loading:false,
-  //   error:action.payload.error,
-  //   mediaAllowed: action.payload.isAllowed,
-  //   stream: action.payload.stream,
-  //   statusMessage:action.payload.statusMessage
-  // } ) ),
   [types.INIT]: (state,action) => ({
     ...state,
     connected:action.connected,
@@ -34,48 +23,46 @@ export const reducers = createReducer({
     remoteVideosEl:action.remoteVideosEl,
     statusMessage:'WebRTC Initialized'
   }),
-  [types.DISCONNECT]: (state,action) => ({...state,connected:action.connected,statusMessage:'WebRTC disconnected'}),
+  [types.DISCONNECT]: (state,action) => ({...state}),
   [types.LOCAL_STREAM_ATTACHED]: (state,action) => ({...state}),
 })
 
 export const actions = {
-  checkMediaPerm: () => (dispatch) => {
-    return new Promise( (resolve,reject) => {
-        navigator.mediaDevices.getUserMedia({video: true, audio: true})
-          .then( stream => {
-            dispatch({ type: types.MEDIA_PERM_ALLOWED, isAllowed:true, stream: stream, statusMessage:'Media permission granted' })
-            resolve(stream)
-          } )
-          .catch( err => {
-            dispatch({ type: types.MEDIA_PERM_ALLOWED, error:err.message, isAllowed:false, stream: null, statusMessage:'Media permission denied'  })
-             reject(err)
-          } )
-      } )
-  },
-  // checkMediaPerm: createApiAction( types.MEDIA_PERM_ALLOWED )( (client,opts) => {
-  //   console.log(`checkMediaPerm action dispatched`)
-  //   return new Promise( (resolve,reject) => {
-  //     navigator.mediaDevices.getUserMedia({video: true, audio: true})
-  //       .then( stream => ({ isAllowed:true, stream: stream, statusMessage:'Media permission granted' }) )
-  //       .catch( err => ({ error:err.message, isAllowed:false, stream: null, statusMessage:'Media permission denied'  }) )
-  //   } )
-  // } ),
   init: () => (dispatch) => {
     return new Promise( (resolve,reject) => {
+      const localVideoEl = 'local-vid'
+      const remoteVideosEl = 'remote-vid-holder'
       webrtc = new SimpleWebRtc({
-          localVideoEl: 'local-vid',
-          remoteVideosEl: 'remote-vid-holder',
+          localVideoEl,
+          remoteVideosEl,
           autoRequestMedia: false
       })
       dispatch({ type: types.INIT, connected:true, localVideoEl, remoteVideosEl })
-      console.log('init exe')
       resolve(true)
+    } )
+  },
+  checkMediaPerm: (signedIn) => (dispatch) => {
+    return new Promise( (resolve,reject) => {
+      if(signedIn){
+        navigator.mediaDevices.getUserMedia({video: true, audio: true})
+          .then( stream => {
+            dispatch({ type: types.MEDIA_PERM_ALLOWED, mediaAllowed:true, stream: stream, statusMessage:'Media permission granted' })
+            resolve({stream,mediaAllowed:true})
+          } )
+          .catch( err => {
+            dispatch({ type: types.MEDIA_PERM_ALLOWED, error:err.message, mediaAllowed:false, stream: null, statusMessage:'Media permission denied'  })
+             reject(err)
+          } )
+      }else{
+        dispatch({ type: types.MEDIA_PERM_ALLOWED, error:'User not verified', mediaAllowed:false, stream: null, statusMessage:'User not verified'  })
+        reject('User not verified')
+      }
     } )
   },
   disconnect: () => (dispatch) => {
     try{
       webrtc.leaveRoom()
-      webrtc.stopLocalVideo()
+      webrtc.stopLocalVideo(localStream)
       webrtc.disconnect()
       dispatch({ type: types.DISCONNECT, connected:false, error:null })
       return true
@@ -86,7 +73,8 @@ export const actions = {
   },
   attachStream: (stream) => (dispatch) => {
     try{
-      webrtc.attachStream(stream)
+      localStream=stream
+      webrtc.attachStream(localStream)
       dispatch({ type: types.LOCAL_STREAM_ATTACHED   })
       return true
     }catch(e){

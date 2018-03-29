@@ -1,9 +1,18 @@
-import uuid from 'uuid/v1'
 import SimpleWebRtc from 'simplewebrtc'
 import attachMediaStream from 'attachmediastream'
 
 SimpleWebRtc.prototype.attachStream = function (stream) {
   attachMediaStream(stream, this.getLocalVideoContainer(), this.config.localVideo)
+}
+
+SimpleWebRtc.prototype.stopLocalVideo = function (stream) {
+  console.log(`overriden stopLocalVideo initialized`)
+  console.log(stream)
+  this.webrtc.stop()
+  stream.getTracks().forEach( (track) => {
+    console.log(`stream loop`)
+    track.stop();
+  })
 }
 
 export const userMediaSupported = () => { return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
@@ -23,13 +32,32 @@ export const initialState = () => ({
       statusMessage:"",
       remoteVideosEl:null
     },
-    firebaseSignin: {
+    firebaseIntegration: {
       signedIn: false,
       initialized: false,
+      firebaseLoading: false,
+      successcreate: false,
+      successfetch: false,
+      successrtfetch: false,
+      successdelete: false,
+      realTimeData: null,
       user: null,
       token: null,
       error: null,
-    }
+    },
+    roomsettings: {
+      roomId: null,
+      password: null,
+      includePassword: false,
+      isSaving: false,
+      saved: false,
+      flagState: false,
+    },
+    requiredFieldHandler: {
+      disabled: true,
+      isValid: true,
+      value: null,
+    },
   }
 })
 export const firebaseConfig = () => ({

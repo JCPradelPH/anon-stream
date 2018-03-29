@@ -3,6 +3,7 @@
 @import "partials/mixins";
 @import "partials/properties";
 @import "partials/defaults";
+@import "partials/tether";
 #app, #room-container, #rm-content{ height:100%; }
 #main-container{
   @extend %vertical;
@@ -29,32 +30,13 @@
 #btn-holder{
   @extend %vertical;
   @extend %align-content-center;
-  #bt-google-signin, #bt-facebook-signin{
-    @extend %horizontal;
-    @extend %justify-content-center;
-    @extend %align-self-center;
-    @extend %btn-template;
-    width:$hm-btn-w;
-    margin:10px;
-    background:#fff;
-  }
-  #bt-google-signin i, #bt-google-signin p{ color:$google-red; }
-  #bt-facebook-signin i, #bt-facebook-signin p{ color: lighten($lt-gray,100); }
   #room-id-holder{
     margin-top:10px;
     @extend %align-self-center;
     width:$hm-btn-w;
   }
-  #bt-facebook-signin{
-    @extend %btn-template;
-    background:$facebook-blue;
-  }
+  #bt-facebook-signin{ margin:10px; }
   #room-id-holder #room-id{ @extend %input-ov-outline; }
-  p{
-    @extend %align-self-center;
-    color:#fff;
-    font-weight:600;
-  }
 }
 #rm-content{
   @extend %horizontal;
@@ -80,4 +62,7 @@
     width: 100%;
     background: $lt-gray;
   }
+  #bt-create-room{ width:100%; }
+  #copy-toast{ top:40px !important; }
+  #flag-spacer{ width:165px; }
 }

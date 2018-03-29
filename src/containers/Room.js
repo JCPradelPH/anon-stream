@@ -2,59 +2,49 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {Redirect} from 'react-router-dom'
 import SimpleWebRtc from 'simplewebrtc'
-import {userMediaSupported} from '../js'
+import uuid from 'uuid/v1'
 import Rx from 'rxjs/Rx'
 
-import LocalDisplay from '../components/LocalDisplay'
+import {userMediaSupported} from '../js'
+import LocalDisplay from '../components/webrtc/LocalDisplay'
+import ButtonTether from '../components/ButtonTether'
+import RoomList from './RoomList'
+import CreateRoomForm from './CreateRoomForm'
 
 import {connect} from 'react-redux'
 
 @connect( (store) => {
   return {
-    connected: store.webrtc.connected,
+    // webrtc states
     remoteVideosEl: store.webrtc.remoteVideosEl,
     localstream: store.webrtc.localstream,
-    mediaAllowed: store.webrtc.mediaAllowed,
-    loading: store.webrtc.loading,
+    webrtcLoading: store.webrtc.loading,
     error: store.webrtc.error,
-    stream: store.webrtc.stream,
-    statusMessage: store.webrtc.statusMessage,
-    localVideoEl: store.webrtc.localVideoEl
+    mediaAllowed: store.webrtc.mediaAllowed,
+    // firebase states
+    signedIn: store.firebaseIntegration.signedIn,
+    user: store.firebaseIntegration.user,
+    firebaseLoading: store.firebaseIntegration.loading,
   }
 } )
 
 export default class Room extends React.Component{
-  componentWillMount(){
-    const {stream,action,roomId,localstream,connected} = this.props
-    this.roomId = roomId
-    const obs = {
-      next: stream => action.webrtc.attachStream(stream),
-      error: err => console.log(err),
-      complete: () => console.log('mediaPerm completed')
-    }
-    this.initWebrtc$()
-      .subscribe({
-        next: connected => { if(connected) this.mediaPermRq$().subscribe(obs) },
-        error: err => console.log(err)
-      })
-  }
+  componentWillMount(){ }
 
   componentDidMount(){
-
+    const {action,signedIn} = this.props
+    if(signedIn){
+      Rx.Observable.zip( this.initWebrtc$(), this.mediaPermRq$(),
+        (isConnected,media) => ({isConnected,media})
+      ).subscribe({
+        next: data => action.webrtc.attachStream(data.media.stream),
+        error: err => console.log(err),
+      })
+    }
   }
 
-  componentWillUnmount(){
-    console.log(`componentWillUnmount`)
-    this.props.action.webrtc.disconnect()
-  }
+  componentWillUnmount(){ this.props.action.webrtc.disconnect() }
 
-  mediaPermRq$ = () => {
-    return Rx.Observable.create( obs => {
-      this.props.action.webrtc.checkMediaPerm()
-      .then( stream => obs.next(stream) )
-      .catch( err => obs.error(err) )
-    } )
-  }
   initWebrtc$ = () => {
     return Rx.Observable.create( obs => {
       this.props.action.webrtc.init()
@@ -63,14 +53,23 @@ export default class Room extends React.Component{
     } )
   }
 
+  mediaPermRq$ = () => {
+    return Rx.Observable.create( obs => {
+      this.props.action.webrtc
+      .checkMediaPerm(this.props.signedIn)
+      .then( stream => obs.next(stream) )
+      .catch( err => obs.error(err) )
+    } )
+  }
+
   render(){
-    console.log(JSON.stringify(this.props,null,2))
-    // console.log(`this.roomId: ${this.roomId}`)
+    const {signedIn} = this.props
+    console.log(`Room render`)
     return(
-      this.roomId!=undefined&&this.roomId!=""&&this.roomId!=null?
+      !signedIn?<Redirect to={'/'} /> :
       <section id="room-container">
         <ValMediaSupportedComp userMediaSupported={userMediaSupported()} {...this.props} />
-      </section> : <Redirect to="/"/>
+      </section>
     )
   }
 }
@@ -87,26 +86,27 @@ const ValMediaSupportedComp = (props) => {
 
 const ValWrtcComp = (props) => {
   return(
-    props.connected?
       <section id="rm-content">
         <section id="left-panel">
           <LocalDisplay {...props} />
-          <LeftBottomPanel {...props} />
+          {
+            props.mediaAllowed?
+              <LeftBottomPanel {...props} /> :
+              <div></div>
+          }
         </section>
         <section id="right-panel">
           <div id={props.remoteVideosEl}></div>
         </section>
-      </section> : <h4 class="jumbotron lg-msg">
-        <i class="fa fa-video"></i>&nbsp;&nbsp;Your browser does not support WebRTC
-      </h4>
+      </section>
   )
 }
-
 const LeftBottomPanel = (props) => {
   return (
     <div id="bot-panel" class={props.mediaAllowed?'button-holder':'hidden button-holder'}>
-      <button class="btn btn-primary bt-default" type="button">
-        Create Room<i class="fa fa-sign-in-alt"></i></button>
+      <ButtonTether {...props} roomId={generateRoomId()} title={'Room Settings'} ComponentContent={CreateRoomForm} />
+      <RoomList {...props} />
     </div>
   )
 }
+const generateRoomId = () => uuid()

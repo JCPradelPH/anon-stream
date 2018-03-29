@@ -4,10 +4,14 @@ const Dotenv = require("dotenv-webpack");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const debug = process.env.NODE_ENV !== "production";
 const extractSass = new ExtractTextPlugin({
-    filename: "style.css",
-    disable: debug,
+    filename: "css/app.style.css",
+    disable: true,
 });
 module.exports = {
+  name: "client",
+  target: "web",
+  mode: 'development',
+  performance: { hints: false },
   entry: {
     app: ['babel-polyfill','./src/index.js']
   },
@@ -16,9 +20,8 @@ module.exports = {
     filename: 'app.bundle.js',
     publicPath: '/'
   },
-  devtool: "source-map",
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js?$/,
         exclude: /(node_modules|bower_components)/,
@@ -57,7 +60,8 @@ module.exports = {
       {
         test: /\.(jpe?g|gif|png)$/,
         loader: 'file-loader?emitFile=false&name=[path][name].[ext]'
-      }
+      },
+      { test: /\.html/, loader: 'file-loader?emitFile=false&name=[path][name].[ext]' }
     ]
   },
   devServer: {
@@ -66,14 +70,17 @@ module.exports = {
   devtool: debug ? "inline-sourcemap" : null,
   plugins: debug ? [
     new Dotenv(),
-    extractSass
+    extractSass,
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development')
+    })
   ] : [
     new Dotenv(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      mangle:false,
-      sourcemap: false
-    }),
+    extractSass,
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    })
   ]
 };
