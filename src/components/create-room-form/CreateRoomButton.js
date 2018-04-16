@@ -1,7 +1,7 @@
 import React from 'react'
-import {Rx,Observable,pipe} from 'rxjs/Rx'
-import {map} from 'rxjs/operators'
-
+import {Observable} from 'rxjs/Rx'
+import { zip } from 'rxjs/observable/zip'
+import { of } from 'rxjs/observable/of'
 import {ButtonIconLastWhiteSm,ButtonIconLastRedSm} from '../'
 
 import {connect} from 'react-redux'
@@ -9,6 +9,7 @@ import {connect} from 'react-redux'
 @connect( store => {
   return {
     roomId: store.roomsettings.roomId,
+    saved: store.roomsettings.saved,
     password: store.roomsettings.password,
     includePassword: store.roomsettings.includePassword,
     firebaseLoading: store.firebaseIntegration.firebaseLoading,
@@ -21,6 +22,7 @@ export default class CreateRoomButton extends React.Component{
 
   validateRequiredInput = () => {
     const {action, roomName} = this.props
+    console.log(`roomName: ${roomName}`)
     if(roomName==null||roomName==""){
       action.requiredFieldHandler.toggleValidInput(false)
     }else{
@@ -30,23 +32,37 @@ export default class CreateRoomButton extends React.Component{
   }
   saveRoomSettings = () => {
     const {action,roomId,user,password,roomName} = this.props
-    const putRoom = this.putRoom$(`rooms/${roomId}`)
-    putRoom({name:roomName,password,userRef: user.email})
-      .subscribe({
-        next: data => console.log(data),
-        error: err => console.log(err),
-      })
+    const putRoom = this.putData$(`rooms/${roomId}`)
+    const putUser = this.putData$(`users/${user.email}`)
+    zip( putRoom({name:roomName,password,roomId,user}),
+      putUser({...user,room: {roomId,roomName,password} }),
+      of(action.roomsettings.setPassword(password)),
+      of(action.roomsettings.setName(roomName)),
+      of(action.roomsettings.setSaveState(true)),
+      data => ({data})
+    ).subscribe({
+      next: data => console.log(data),
+      error: err => console.log(err),
+    })
   }
   leaveRoomSettings = () => {
     const {action,roomId,user,password} = this.props
-    this.deleteRoom$(`rooms/${roomId}`)
-      .subscribe({
+    const putUser = this.putData$(`users/${user.email}`)
+    zip(
+      this.deleteRoom$(`rooms/${roomId}`),
+      putUser({...user}),
+      of(action.requiredFieldHandler.setValue(null)),
+      of(action.roomsettings.setDefaultPassword(null)),
+      of(action.roomsettings.setPassword(null)),
+      of(action.roomsettings.setName(null)),
+      data => ({data})
+    ).subscribe({
         next: data => action.roomsettings.refreshState(),
         error: err => console.log(err),
       })
   }
 
-  putRoom$ = (path) => (obj) => {
+  putData$ = (path) => (obj) => {
     return Observable.create( obs => {
       this.props.action.firebaseIntegration
         .putDataRequest(path,obj)
@@ -54,6 +70,7 @@ export default class CreateRoomButton extends React.Component{
         .catch( err => obs.error(err) )
     } )
   }
+
   deleteRoom$ = (path) => {
     return Observable.create( obs => {
       this.props.action.firebaseIntegration
@@ -63,11 +80,14 @@ export default class CreateRoomButton extends React.Component{
     } )
   }
 
+  componentWillUnmount(){
+
+  }
+
   render(){
-    const {firebaseLoading,successcreate} = this.props
-    console.log(`firebaseLoading: ${firebaseLoading}`)
+    const {firebaseLoading,saved} = this.props
     return(
-      successcreate?<ButtonIconLastRedSm onClick={this.leaveRoomSettings} disabled={firebaseLoading} buttonlabel={firebaseLoading?'Leaving...':'Leave Room'} />:
+      saved?<ButtonIconLastRedSm onClick={this.leaveRoomSettings} disabled={firebaseLoading} buttonlabel={firebaseLoading?'Leaving...':'Leave Room'} />:
       <ButtonIconLastWhiteSm onClick={this.validateRequiredInput} disabled={firebaseLoading} buttonlabel={firebaseLoading?'Creating...':'Create'} />
     )
   }

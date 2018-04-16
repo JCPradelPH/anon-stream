@@ -21,6 +21,10 @@
 %align-content-stretch { @include align-content(stretch); }
 %align-content-flex-start { @include align-content(flex-start); }
 %align-content-flex-end { @include align-content(flex-end); }
+%flexed1 { @include flexed(1); }
+%flexed2 { @include flexed(2); }
+%flexed3 { @include flexed(3); }
+%flexed4 { @include flexed(4); }
 
 %input-def-props{
   padding:$input-def-pad;

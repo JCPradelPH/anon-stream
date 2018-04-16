@@ -1,7 +1,6 @@
 import React from 'react'
-import {pipe,Observable} from 'rxjs/Rx'
-import {distinctUntilChanged,debounceTime,map} from 'rxjs/operators'
-import {CopyToClipboard} from 'react-copy-to-clipboard'
+import {pipe,Subject} from 'rxjs/Rx'
+import {distinctUntilChanged,debounceTime} from 'rxjs/operators'
 
 import {connect} from 'react-redux'
 
@@ -11,6 +10,7 @@ import {connect} from 'react-redux'
     firebaseLoading: store.firebaseIntegration.firebaseLoading,
     successcreate: store.firebaseIntegration.successcreate,
     flagState: store.roomsettings.flagState,
+    saved: store.roomsettings.saved,
   }
 } )
 export default class RoomPasswordField extends React.Component{
@@ -23,10 +23,14 @@ export default class RoomPasswordField extends React.Component{
   }
 
   componentDidMount(){
-    const mapEv = map( ev => ev.target.value )
-    const obs$ = Observable.fromEvent(this.passwordInp(),'input')
-      .pipe( mapEv,debounceTime(500),distinctUntilChanged() )
-    this.passFieldSubs = obs$.subscribe( val => this.props.action.roomsettings.setPassword(val) )
+    this.obs$ = new Subject()
+    this.passFieldSubs = this.obs$
+      .pipe( debounceTime(500),distinctUntilChanged() )
+      .subscribe( val => this.props.action.roomsettings.setPassword(val) )
+  }
+
+  handlePasswordChange = (e) => {
+    this.obs$.next(e.target.value)
   }
 
   componentWillUnmount(){
@@ -38,13 +42,14 @@ export default class RoomPasswordField extends React.Component{
   handleCheckChange = (ev) => this.passwordInp().value=ev.target.checked?this.passwordInp().value:''
 
   render(){
-    const {includePassword,firebaseLoading,successcreate,flagState} = this.props
+    const {includePassword,firebaseLoading,saved,flagState,roomPassword} = this.props
+    console.log(`roomPassword: ${roomPassword}`)
     return(
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
             {
-              successcreate?<i class="fa fa-key"></i>:
+              saved?<i class="fa fa-key"></i>:
               <input type="checkbox" disabled={firebaseLoading} onChange={this.handleCheckChange}
                 onClick={ this.updatePasswordFieldState.bind(this,!includePassword) } />
             }
@@ -53,8 +58,9 @@ export default class RoomPasswordField extends React.Component{
         {
           flagState?
           <p disabled id="flag-spacer"></p>:
-          <input id="room-pass" type={this.state.passwordShown?"text":"password"}
-            readOnly={successcreate} class="form-control" disabled={firebaseLoading?true:!includePassword} placeholder="Room password" aria-label="Room password" />
+          roomPassword!=null?<div class="fake-field form-control">{this.state.passwordShown?roomPassword:'••••••••••••'}</div> :
+          <input id="room-pass" onChange={this.handlePasswordChange} type={this.state.passwordShown?"text":"password"}
+            readOnly={saved} class="form-control" disabled={firebaseLoading?true:!includePassword} placeholder="Room password" aria-label="Room password" />
         }
         <div class="input-group-append">
           <button class={this.state.passwordShown?"btn pressed":"btn btn-outline-secondary"}

@@ -5,7 +5,7 @@ import {firebaseConfig} from '../../js'
 
 const types = createConstants('FIREBASE_INTEGRATION')(
   'INIT','SIGNIN','CREATE_UPDATE', 'FETCH', 'AUTH_VALIDATION',
-  'PERM_SIGNIN','DELETE','FETCH_REALTIME'
+  'PERM_SIGNIN','DELETE','FETCH_REALTIME','FETCH_RELATED'
 )
 
 export const reducers = createReducer({
@@ -41,6 +41,15 @@ export const reducers = createReducer({
       ...state,
       firebaseLoading:action.loading,
       successfetch:action.successfetch,
+      error:action.error
+    }
+  ),
+  [types.FETCH_RELATED] : (state,action) => (
+    {
+      ...state,
+      relatedData:action.relatedData,
+      successfetch:action.successrtfetch,
+      firebaseLoading:action.loading,
       error:action.error
     }
   ),
@@ -92,15 +101,18 @@ export const actions = {
         })
     } )
   },
-  onAuthStateChanged: () => (dispatch) => {
+  onAuthStateChanged: (cb) => (dispatch) => {
     dispatch({type:types.AUTH_VALIDATION,signedIn:false,loading:true,user:null,token:null})
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        const {displayName,photoURL,email,stsTokenManager} = user
-        console.log('onAuthStateChanged success')
+        const {displayName,photoURL,email,refreshToken} = user
+        user.token = refreshToken
+        user.path = `users/${email}`
         dispatch({type:types.AUTH_VALIDATION,signedIn:true,loading:false,user:{displayName,photoURL,email},token:null})
+        if(cb) cb(user)
       }else{
         dispatch({type:types.AUTH_VALIDATION,signedIn:false,loading:false,user:null,token:null})
+        if(cb) cb(null)
       }
     })
   },
@@ -109,12 +121,10 @@ export const actions = {
     return new Promise( (resolve,reject) => {
       docRef(path).set(record)
         .then( data => {
-          console.log(`putDataRequest: success: ${data}`)
           dispatch({ type: types.CREATE_UPDATE, loading:false, successcreate:true, error:null })
           resolve(data)
         } )
         .catch( err => {
-          console.log(`putDataRequest: err: ${err}`)
           dispatch({ type: types.CREATE_UPDATE, loading:false, successcreate:false, error:err })
           reject(err)
         } )
@@ -125,12 +135,10 @@ export const actions = {
     return new Promise( (resolve,reject) => {
       docRef(path).delete()
         .then( data => {
-          console.log(`deleteDataRequest: success: ${data}`)
           dispatch({ type: types.DELETE, loading:false, successdelete:true, successcreate:false, error:null })
           resolve(data)
         } )
         .catch( err => {
-          console.log(`deleteDataRequest: err: ${err}`)
           dispatch({ type: types.DELETE, loading:false, successdelete:false, successcreate:false, error:err })
           reject(err)
         } )
@@ -141,7 +149,6 @@ export const actions = {
     return new Promise( (resolve,reject) => {
       docRef(path).get()
         .then( doc => {
-          console.log(`fetchData: success: ${doc}`)
           if(doc && doc.exists){
             const {displayName,photoURL,token} = doc.data()
             dispatch({ type: types.FETCH, loading:false, successfetch:true,
@@ -150,8 +157,23 @@ export const actions = {
           }
         } )
         .catch( err => {
-          console.log(`fetchData: err: ${err}`)
           dispatch({ type: types.FETCH, loading:false, successfetch:false, error:err })
+          reject(err)
+        } )
+    } )
+  },
+  fetchRelatedData: (path,field,op,val) => (dispatch) => {
+    dispatch({ type: types.FETCH, loading:true, successfetch:false, error:null })
+    return new Promise( (resolve,reject) => {
+      colRef(path).where(field,op,val).get()
+        .then( result => {
+          const finalResp = result.docs.map( item => ({...item.data()}) )
+          dispatch({ type: types.FETCH_RELATED, successfetch:(result.docs.length>0),
+            error:(result.docs.length>0?null:'No result'), relatedData:(result.docs.length>0?finalResp:null) })
+          resolve(result.docs.length>0?finalResp:null)
+        } )
+        .catch( err => {
+          dispatch({ type: types.FETCH_RELATED, loading:false, successfetch:false, error:err })
           reject(err)
         } )
     } )
@@ -160,8 +182,9 @@ export const actions = {
     dispatch({ type: types.FETCH_REALTIME, successrtfetch:false })
     return new Promise( (resolve,reject) => {
       colRef(path).onSnapshot( result => {
+        const finalResp = result.docs.map( item => ({id:item.id,data:{ ...item.data() }}) )
         dispatch({ type: types.FETCH_REALTIME, successrtfetch:(result.docs.length>0),
-          error:(result.docs.length>0?null:'No result'), realTimeData:(result.docs.length>0?result.docs:null) })
+          error:(result.docs.length>0?null:'No result'), realTimeData:(result.docs.length>0?finalResp:null) })
         if(result.docs.length>0) resolve(true)
         else reject('No result')
       } )

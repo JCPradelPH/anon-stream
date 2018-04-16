@@ -2,23 +2,31 @@ import React from 'react'
 
 export const MainLogoLt = (props) => {
   return(
-    <img id="main-logo" src="../css/images/main-logo-lt.png" />
+    process.env.NODE_ENV=='development'?
+      <img id="main-logo" src="../css/images/main-logo-lt.png" /> :
+      <img id="main-logo" src="css/images/main-logo-lt.png" />
   )
 }
 
 export const MainLogoDk = (props) => {
   return(
-    <img id="main-logo" src="../css/images/main-logo-dk.png" />
+    process.env.NODE_ENV=='development'?
+      <img id="main-logo" src="../css/images/main-logo-dk.png" /> :
+      <img id="main-logo" src="css/images/main-logo-dk.png" />
   )
 }
 export const LoaderAnimSm = (props) => {
   return(
-    <img class="loader-anim-sm" src="../css/images/loader.gif" />
+    process.env.NODE_ENV=='development'?
+    <img class="loader-anim-sm" src="../css/images/loader.gif" /> :
+    <img class="loader-anim-sm" src="css/images/loader.gif" />
   )
 }
 export const LoaderAnimSLg = (props) => {
   return(
-    <img class="loader-anim-lg" src="../css/images/loader.gif" />
+    process.env.NODE_ENV=='development'?
+    <img class="loader-anim-lg" src="../css/images/loader.gif" /> :
+    <img class="loader-anim-lg" src="css/images/loader.gif" />
   )
 }
 
@@ -104,7 +112,6 @@ export const ButtonIconLastBlueSm = (props) => {
     </button>
   )
 }
-
 
 export const JoinRoomInput = () => (
     <div id="room-id-holder" class="input-group mb-3">

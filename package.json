@@ -4,9 +4,8 @@
   "description": "A WebRTC integrated software",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "webpack-dev-server --output-public-path=/dist/",
-    "build": "webpack",
-    "build-prod": "webpack -p"
+    "start": "webpack-dev-server --open --hot",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -43,6 +42,7 @@
     "jquery": "^3.3.1",
     "node-sass": "^4.7.2",
     "node-sass-asset-functions": "^0.1.0",
+    "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-copy-to-clipboard": "^5.0.1",
     "react-css-modules": "^4.7.1",
@@ -69,6 +69,7 @@
   "dependencies": {
     "firebase": "^4.11.0",
     "react-modal-bootstrap": "^1.1.1",
+    "string-replace-loader": "^2.1.1",
     "uninstall": "0.0.0"
   }
 }

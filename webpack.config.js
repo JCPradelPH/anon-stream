@@ -1,16 +1,31 @@
+process.env.NODE_ENV = "development"; // development | production
 const path = require("path");
 const webpack = require("webpack");
 const Dotenv = require("dotenv-webpack");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const debug = process.env.NODE_ENV !== "production";
+const buildPath = debug?'/':'./';
 const extractSass = new ExtractTextPlugin({
     filename: "css/app.style.css",
-    disable: true,
+    publicPath: buildPath,
+    disable: debug
 });
+const styleLoaders = debug?[{
+  loader: 'css-loader',
+  options: { publicPath: './', sourceMap: true }
+}]:[{
+  loader: 'string-replace-loader',
+  options: {
+    multiple: [
+      { search:'/css/fonts/', replace:'fonts/', flags:'g' },
+      { search:'/css/webfonts/', replace:'webfonts/', flags:'g' }
+    ]
+  }
+}, { loader: 'css-loader', options: { publicPath: buildPath, sourceMap: true } }
+]
 module.exports = {
-  name: "client",
-  target: "web",
-  mode: 'development',
+  mode: process.env.NODE_ENV,
   performance: { hints: false },
   entry: {
     app: ['babel-polyfill','./src/index.js']
@@ -18,7 +33,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.bundle.js',
-    publicPath: '/'
+    publicPath: buildPath
   },
   module: {
     rules: [
@@ -28,59 +43,22 @@ module.exports = {
         loader: 'babel-loader',
         query: {
           presets: ['env','stage-0','react'],
-          plugins: [
-            'react-html-attrs',
-            'transform-class-properties',
-            'transform-decorators-legacy'
-          ]
+          plugins: [ 'react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy' ]
         }
       },
-      {
-        test: /(\.scss|\.css)$/,
-        use: extractSass.extract({
-          fallback: 'style-loader',
-          use: [
-              {
-                  loader: 'css-loader',
-                  options: {
-                      sourceMap: true
-                  }
-              },
-              {
-                  loader: 'sass-loader',
-                  options: {
-                      sourceMap: true,
-                      outFile: 'css/style.css',
-                      outputStyle: 'expanded',//or nested or compact or compressed
-                  }
-              }
-          ],
-        })
-      },
-      {
-        test: /\.(jpe?g|gif|png)$/,
-        loader: 'file-loader?emitFile=false&name=[path][name].[ext]'
-      },
-      { test: /\.html/, loader: 'file-loader?emitFile=false&name=[path][name].[ext]' }
+      { test: /\.css$/, use: extractSass.extract({ fallback: 'style-loader', use: styleLoaders }) },
+      { test: /\.(jpe?g|gif|png)$/, loader: 'file-loader?emitFile=false&name=[path][name].[ext]' }
     ]
   },
-  devServer: {
-    historyApiFallback: true
-  },
-  devtool: debug ? "inline-sourcemap" : null,
-  plugins: debug ? [
+  devServer: { historyApiFallback: true },
+  devtool: "inline-sourcemap",
+  plugins: [
+    new HtmlWebpackPlugin({ template:'./src/index.html' }),
     new Dotenv(),
-    extractSass,
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
-    })
-  ] : [
-    new Dotenv(),
-    extractSass,
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    })
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
+    }),
+    extractSass
   ]
 };
