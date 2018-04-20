@@ -1,17 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import CSSModules from 'react-css-modules'
-
 import '../css/fontawesome-all.min.css'
 import '../css/bootstrap.min.css'
 import '../dist/css/style.css'
 
 import MainLayout from './MainLayout'
-import {configureStore} from './redux/configureStore'
 
-let initialState = {
-  sample: {}
+function run(){
+  const app = document.getElementById("app")
+  ReactDOM.render(<MainLayout />, app)
 }
-const {store, action} = configureStore({initialState})
-const app = document.getElementById("app")
-ReactDOM.render(<MainLayout store={store} action={action} />, app)
+if (window.addEventListener) {
+ window.addEventListener('DOMContentLoaded', run);
+} else {
+ window.attachEvent('onload', run);
+}

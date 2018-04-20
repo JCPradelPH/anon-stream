@@ -19,4 +19,190 @@ a{
   text-decoration:none !important;
   display:block;
 }
-i.fa{ padding: 6px; }
+input{ font-size: 0.9em !important; }
+.bt-icon-last i.fa,.bt-icon-last i.fab{
+  padding: 6px;
+  font-size:2em;
+}
+.bt-icon-last-sm i.fa,.bt-icon-last-sm i.fab{
+  padding: 6px;
+  font-size:1.5em;
+}
+.button-holder{
+  margin: 20px 0px;
+  .bt-default{
+    width:100%;
+  }
+}
+.hidden { display:none !important; }
+.loader-anim-sm{
+  width: 75px;
+  margin: auto;
+}
+.loader-anim-lg{
+  width: 150px;
+  margin: auto;
+}
+.bt-def{
+  outline:none !important;
+  p{
+    @extend %align-self-center;
+    font-weight:600;
+  }
+}
+.bt-def:active{ outline:none !important; }
+.bt-icon-last, .bt-icon-last-sm{
+  @extend %horizontal;
+  @extend %justify-content-center;
+  @extend %align-self-center;
+  @extend %btn-template;
+  width:$hm-btn-w;
+  background:#fff;
+}
+.bt-icon-last-sm{
+  width:auto;
+  font-size: 12px;
+  padding: 5px 10px;
+  text-align: center;
+}
+
+.bt-facebook-theme{
+  background:$facebook-blue;
+  border: 1px solid darken($facebook-blue,10);
+  p, i{ color: lighten($lt-gray,100);transition: color 0.5s; }
+  transition: background 0.5s;
+}
+.bt-facebook-theme:hover{
+  background:darken($facebook-blue,10);
+  border: 1px solid darken($facebook-blue,30);
+  outine:none;
+  p,i{ color:#fff; }
+}
+.bt-facebook-theme:disabled{
+  background:lighten($facebook-blue,20);
+  border: 1px solid lighten($facebook-blue,10);
+  outine:none;
+  p,i{ color:#fff; }
+}
+
+.bt-google-theme{
+  background:#fff;
+  border: 1px solid darken($google-red,10);
+  p, i{ color:$google-red;transition: color 0.5s; }
+  transition: background 0.5s;
+}
+.bt-google-theme:hover{
+  background:darken($google-red,10);
+  border: 1px solid darken($google-red,30);
+  outine:none;
+  p,i{ color:#fff; }
+}
+.bt-google-theme:disabled{
+  background:lighten($google-red,20);
+  border: 1px solid lighten($google-red,10);
+  outine:none;
+  p,i{ color:#fff; }
+}
+
+.bt-white-theme{
+  background:$lt-gray;
+  border: 1px solid $main-color;
+  p, i{ color:$main-color;transition: color 0.5s; }
+  transition: background 0.5s;
+}
+.bt-white-theme:hover{
+  background:$main-color;
+  border: 1px solid darken($main-color,10);
+  outine:none;
+  p,i{ color:$lt-gray; }
+}
+.bt-white-theme:disabled{
+  background:lighten($main-color,20);
+  border: 1px solid lighten($main-color,10);
+  outine:none;
+  p,i{ color:$lt-gray; }
+}
+.bt-blue-theme{
+  background:$facebook-blue;
+  border: 1px solid darken($facebook-blue,5);
+  p, i{ color:$lt-gray;transition: color 0.5s; }
+  transition: background 0.5s;
+}
+.bt-blue-theme:hover{
+  background:darken($facebook-blue,15);
+  border: 1px solid darken($facebook-blue,20);
+  outine:none;
+  p,i{ color:#fff; }
+}
+.bt-blue-theme:disabled{
+  background:lighten($facebook-blue,20);
+  border: 1px solid lighten($facebook-blue,10);
+  outine:none;
+  p,i{ color:#fff; }
+}
+.bt-red-theme{
+  background:$google-red;
+  border: 1px solid darken($google-red,5);
+  p, i{ color:$lt-gray;transition: color 0.5s; }
+  transition: background 0.5s;
+}
+.bt-red-theme:hover{
+  background:darken($google-red,15);
+  border: 1px solid darken($google-red,20);
+  outine:none;
+  p,i{ color:#fff; }
+}
+.bt-red-theme:disabled{
+  background:lighten($google-red,20);
+  border: 1px solid lighten($google-red,10);
+  outine:none;
+  p,i{ color:#fff; }
+}
+.bt-primary-theme{
+  background:$sec-color;
+  border: 1px solid darken($sec-color,5);
+  p, i{ color:$lt-gray;transition: color 0.5s; }
+  transition: background 0.5s;
+}
+.bt-primary-theme:hover{
+  background:darken($sec-color,15);
+  border: 1px solid darken($sec-color,20);
+  outine:none;
+  p,i{ color:#fff; }
+}
+.bt-primary-theme:disabled{
+  background:lighten($sec-color,20);
+  border: 1px solid lighten($sec-color,10);
+  outine:none;
+  p,i{ color:#fff; }
+}
+.pressed{
+  color: $lt-gray;
+  background-color: $dk-blue;
+  background-image: none;
+  border-color: darken($dk-blue,20);
+}
+.btn-outline-secondary:hover{
+  color: $dk-blue;
+  background-color: $lt-gray;
+  background-image: none;
+  border-color: $dk-blue;
+}
+.valid-tooltip{
+  display:block !important;
+  transition: opacity 1s;
+}
+.t-shown{ opacity:1.0; }
+.t-hidden{ opacity:0.0; }
+.invalid-input{
+  border:1px solid $google-red;
+}
+.invalid-input::placeholder{ color:lighten($google-red,30); }
+.invalid-help-text{
+  color:$google-red !important;
+}
+.fake-field{
+  background:#e9ecef;
+  font-size: 0.9em !important;
+  padding:10px;
+}

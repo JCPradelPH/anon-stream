@@ -1,0 +1,84 @@
+div[data-tether-visibility="open"]{
+  top: 0px;
+  right: 0px !important;
+  position: absolute;
+  // transform: translateX(250px) translateY(135px) translateZ(0px);
+}
+div[data-tether-visibility="close"]{
+  display:none;
+}
+.popover{
+  z-index: 1060;
+  display: block;
+  max-width: 300px;
+  padding: 1px;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-break: auto;
+  line-height: 1.5;
+  text-align: start;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  white-space: normal;
+  word-break: normal;
+  word-spacing: normal;
+  font-size: .875rem;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: .3rem;
+}
+.popover-title {
+    padding: 8px 14px;
+    margin: 0;
+    font-size: 1rem;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ebebeb;
+    border-radius: .2375rem .2375rem 0 0;
+}
+.popover.bs-tether-element-attached-right .popover-arrow, .popover.popover-left .popover-arrow {
+    top: 50%;
+    right: -11px;
+    margin-top: -11px;
+    border-right-width: 0;
+    border-left-color: rgba(0,0,0,.25);
+}
+
+.popover-arrow {
+    border-width: 11px;
+}
+.popover-arrow, .popover-arrow::after {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+.popover.bs-tether-element-attached-right .popover-arrow::after, .popover.popover-left .popover-arrow::after {
+    right: 1px;
+    bottom: -10px;
+    content: "";
+    border-right-width: 0;
+    border-left-color: #fff;
+}
+
+.popover-arrow::after {
+    content: "";
+    border-width: 10px;
+}
+.popover-arrow, .popover-arrow::after {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+.popover-content {
+    padding: 9px 14px;
+}
