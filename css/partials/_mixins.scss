@@ -43,10 +43,3 @@
   -o-align-content: $d;
   -webkit-align-content: $d;
 }
-@mixin flexed($d){
-  flex: $d;
-  -moz-flex: $d;
-  -ms-flex: $d;
-  -o-flex: $d;
-  -webkit-flex: $d;
-}

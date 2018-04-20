@@ -3,11 +3,12 @@
 @import "partials/mixins";
 @import "partials/properties";
 @import "partials/defaults";
-@import "partials/tether";
-#app, #room-container, #rm-content{ height:100%; }
-#main-container{
-  @extend %vertical;
-  @extend %justify-content-center;
+#app{
+  height:100%;
+  #main-container{
+    @extend %vertical;
+    @extend %justify-content-center;
+  }
 }
 #logo-holder{
   @extend %vertical;
@@ -30,85 +31,26 @@
 #btn-holder{
   @extend %vertical;
   @extend %align-content-center;
+  #bt-create-room{
+    @extend %horizontal;
+    @extend %justify-content-center;
+    @extend %align-self-center;
+    @extend %btn-template;
+    width:$hm-btn-w;
+    margin:10px;
+  }
   #room-id-holder{
     margin-top:10px;
     @extend %align-self-center;
     width:$hm-btn-w;
+    button{
+      @extend %btn-template;
+      background: $sec-color;
+    }
+    #room-id{ @extend %input-ov-outline; }
   }
-  #bt-facebook-signin{ margin:10px; }
-  #room-id-holder #room-id{ @extend %input-ov-outline; }
-}
-#rm-content{
-  @extend %horizontal;
-  #right-panel{
-    @extend %vertical;
-    padding: 10px;
-  }
-  #right-panel article{
-    width: $video-dimens;
-    color: #fff;
-  }
-  #right-panel article video{ width: $video-dimens; }
-  #right-panel article .screen-blocked{
-    padding:25px;
-    font-size:12px;
-  }
-  #local-vid{
-    background:none;
-    height:175px;
-  }
-  #left-panel{
-    width: 360px;
-    padding:10px;
-    background:$lt-gray;
-  }
-
-  #mid-panel{
-    @extend %flexed1;
-  }
-  #bt-create-room{
-    margin-top: 15px;
-    width:100%;
-  }
-  #copy-toast{ top:40px !important; }
-  #flag-spacer{ width:165px; }
-  #search-panel{ height:100%; }
-  #list-holder{
-    height: 85%;
-    overflow-y: auto;
-    margin:10px;
-  }
-}
-#room-list-view{
-  ul.list-group{
-    max-width: 300px;
-  }
-  a.list-group-item{
-    padding: 0px !important;
-    width:100%;
-    min-height:120px;
-    margin-bottom: 20px;
-    border-radius: .25rem !important;
-  }
-  img.list-img{
-    height:50px !important;
-    width: 50px !important;
-    border-radius:100%;
-    margin:10px;
-  }
-  div.list-details{
-    width:180px !important;
-  }
-  p{ font-size:12px;color:$sec-color; }
-  h6{
-    color:$sec-color;
-    font-family: 'Quicksand Bold';
-  }
-  p.sup-sub-title{
-    color:$main-color;
-  }
-  .badge{
-    background:$main-color;
-    margin:10px;
+  p{
+    @extend %align-self-center;
+    color:#fff;
   }
 }
